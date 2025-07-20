@@ -23,7 +23,7 @@ const NotificationFeed = ({ token, user }) => {
 
     fetchNotifications();
 
-    const socket = io('http://localhost:5000');
+    const socket = io('https://remotemessagesender.onrender.com');
     socket.on('newNotification', (notification) => {
       // Managers now see their own sent notifications
       if (user && (user.role !== 'manager' || notification.sender === user._id)) {

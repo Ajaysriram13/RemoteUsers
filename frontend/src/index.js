@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import './styles/main.css'; // Import the main application styles
 import App from './App';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://remotemessagesender.onrender.com';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
