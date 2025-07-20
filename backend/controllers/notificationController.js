@@ -34,8 +34,9 @@ const createNotification = async (req, res, io) => {
 
       const offlineUsers = allUsers.filter(user => {
         const isOffline = !connectedUsers[user._id.toString()];
-        console.log(`[NOTIF] Checking user ${user.username} (${user._id}): isOffline = ${isOffline}`);
-        return isOffline;
+        const isNotManager = user.role !== 'manager';
+        console.log(`[NOTIF] Checking user ${user.username} (${user._id}): isOffline = ${isOffline}, isNotManager = ${isNotManager}`);
+        return isOffline && isNotManager;
       });
 
       console.log('[NOTIF] Final offline users:', offlineUsers.map(u => ({ id: u._id, username: u.username })));
