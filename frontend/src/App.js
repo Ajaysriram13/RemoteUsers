@@ -25,25 +25,18 @@ const App = () => {
             headers: { 'x-auth-token': token },
           });
           setUser(res.data);
-          console.log('[FRONTEND] Logged in user data:', res.data);
 
           // Initialize and store socket instance
           const newSocket = io('https://remotemessagesender.onrender.com');
-          setSocket(newSocket); // Store the socket instance
-          console.log(`[FRONTEND] Emitting userConnected for user: ${res.data._id}`);
+          setSocket(newSocket); // Store the socket instanc
           newSocket.emit('userConnected', res.data._id);
-          console.log('[FRONTEND] Socket listener for offlineUsersNotification being set up.');
-
           // Listen for offlineUsersNotification from backend
           newSocket.on('offlineUsersNotification', (data) => {
-            console.log('[FRONTEND] Received offlineUsersNotification:', data);
-            console.log('[FRONTEND] User role for check:', res.data.role);
             if (res.data && res.data.role === 'manager') {
               const offlineUsernames = data.offlineUsers.map(u => u.username).join(', ');
               setPopupMessage(`The following users are offline and will receive an email: ${offlineUsernames}`); // Set popup message
-              console.log(`[FRONTEND] Displaying popup for offline users: ${offlineUsernames}`);
             } else {
-              console.log('[FRONTEND] Not a manager, or user data not available. Not showing alert.');
+
             }
           });
 
@@ -68,7 +61,7 @@ const App = () => {
         socket.disconnect();
       }
     };
-  }, [token]); // Removed 'socket' from dependency array to prevent infinite loop
+  }, [token,socket]); // Removed 'socket' from dependency array to prevent infinite loop
 
   const handleSetToken = (token) => {
     console.log('[FRONTEND] Setting token:', token);
