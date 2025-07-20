@@ -18,7 +18,7 @@ const NotificationForm = ({ token }) => {
       await axios.post('/api/notifications', formData, {
         headers: { 'x-auth-token': token },
       });
-      // setFormData({ message: '', priority: 'Normal' });
+      setFormData({ message: '', priority: 'Normal' });
     } catch (err) {
       console.error(err.response.data);
     }
