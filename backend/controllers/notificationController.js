@@ -46,7 +46,7 @@ const createNotification = async (req, res, io) => {
       if (offlineUsers.length > 0) {
         console.log(`[NOTIF] Attempting to emit offlineUsersNotification to manager socket ID: ${managerSocketId}`);
         io.to(managerSocketId).emit('offlineUsersNotification', {
-          offlineUsers: offlineUsers.map(User => ({ username: User.username })),
+          offlineUsers: offlineUsers.map(user => ({ username: user.username })),
           messageSent: message,
         });
       }

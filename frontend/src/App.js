@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -13,7 +13,7 @@ import Popup from './components/Popup'; // Import the new Popup component
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [user, setUser] = useState(null);
-  const [socket, setSocket] = useState(null); // State to hold the socket instance
+  const socketRef = useRef(null); // Use useRef to hold the socket instance
   const [popupMessage, setPopupMessage] = useState(''); // State for popup message
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -28,10 +28,10 @@ const App = () => {
 
           // Initialize and store socket instance
           const newSocket = io('https://remotemessagesender.onrender.com');
-          setSocket(newSocket); // Store the socket instanc
-          newSocket.emit('userConnected', res.data._id);
+          socketRef.current = newSocket; // Store the socket instance
+          socketRef.current.emit('userConnected', res.data._id);
           // Listen for offlineUsersNotification from backend
-          newSocket.on('offlineUsersNotification', (data) => {
+          socketRef.current.on('offlineUsersNotification', (data) => {
             if (res.data && res.data.role === 'manager') {
               const offlineUsernames = data.offlineUsers.map(u => u.username).join(', ');
               setPopupMessage(`The following users are offline and will receive an email: ${offlineUsernames}`); // Set popup message
@@ -44,9 +44,9 @@ const App = () => {
           console.error('[FRONTEND] Error fetching user or setting up socket:', err.response ? err.response.data : err.message);
           setToken(null);
           localStorage.removeItem('token');
-          if (socket) {
+          if (socketRef.current) {
             console.log('[FRONTEND] Disconnecting socket due to error.');
-            socket.disconnect(); // Disconnect socket on error
+            socketRef.current.disconnect(); // Disconnect socket on error
           }
         }
       }
@@ -56,12 +56,12 @@ const App = () => {
 
     // Cleanup function for useEffect
     return () => {
-      if (socket) {
+      if (socketRef.current) {
         console.log('[FRONTEND] Cleaning up: Disconnecting socket.');
-        socket.disconnect();
+        socketRef.current.disconnect();
       }
     };
-  }, [token,socket]); // Removed 'socket' from dependency array to prevent infinite loop
+  }, [token]);
 
   const handleSetToken = (token) => {
     console.log('[FRONTEND] Setting token:', token);
@@ -71,10 +71,10 @@ const App = () => {
 
   const handleLogout = () => {
     console.log('[FRONTEND] Initiating logout.');
-    if (socket && user) {
+    if (socketRef.current && user) {
       console.log(`[FRONTEND] Emitting userDisconnected for user: ${user._id} and disconnecting socket.`);
-      socket.emit('userDisconnected', user._id);
-      socket.disconnect(); // Disconnect the socket
+      socketRef.current.emit('userDisconnected', user._id);
+      socketRef.current.disconnect(); // Disconnect the socket
     }
     setToken(null);
     setUser(null);
