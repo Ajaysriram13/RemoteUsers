@@ -1,0 +1,73 @@
+:root {
+  --background-color: #f0f2f5;
+  --text-color: #333;
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --border-color: #ddd;
+  --card-background: #fff;
+  --high-priority-color: #dc3545; /* Red */
+  --low-priority-color: #6c757d; /* Grey */
+}
+
+.App {
+  text-align: center;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+}
+
+.App-header {
+  background-color: var(--primary-color);
+  padding: 20px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Priority Colors */
+.high-priority {
+  color: var(--high-priority-color);
+  font-weight: bold;
+}
+
+.low-priority {
+  color: var(--low-priority-color);
+}
