@@ -25,7 +25,11 @@ connectDB();
 startCronJobs();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://remotemessagesenderfrontend.onrender.com",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(express.json());
 
 const connectedUsers = {}; // userId -> socketId
