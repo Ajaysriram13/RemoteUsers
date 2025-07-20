@@ -27,7 +27,7 @@ const App = () => {
           console.log('[FRONTEND] Logged in user data:', res.data);
 
           // Initialize and store socket instance
-          const newSocket = io('http://localhost:5000');
+          const newSocket = io('https://remotemessagesender.onrender.com');
           setSocket(newSocket); // Store the socket instance
           console.log(`[FRONTEND] Emitting userConnected for user: ${res.data._id}`);
           newSocket.emit('userConnected', res.data._id);
