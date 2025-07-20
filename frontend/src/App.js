@@ -16,6 +16,7 @@ const App = () => {
   const [socket, setSocket] = useState(null); // State to hold the socket instance
   const [popupMessage, setPopupMessage] = useState(''); // State for popup message
 
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchUser = async () => {
       if (token) {
